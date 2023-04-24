@@ -22,4 +22,10 @@ public class MainClassTest extends MainClass {
         Assert.assertTrue("Метод getClassString не вернул строку с подстрокой hello или Hello",
                 StringResult.contains("Hello") || StringResult.contains("hello"));
     }
+    @Test
+    public void TestGetClassNumber() {
+        int ClassResult = this.getClassNumber();
+        Assert.assertTrue("Метод getClassNumber вернул число большее либо равное 45", ClassResult < 45);
+    }
+
 }
