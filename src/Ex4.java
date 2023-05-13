@@ -9,18 +9,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import java.util.List;
 import java.net.URL;
 
-public class Lesson3 {
+public class Ex4 {
     private AppiumDriver driver;
 
     @Before
     public void setUp() throws Exception {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("deviceName", "Pixel 5 API 29");
-        capabilities.setCapability("udid", "emulator-5554");
+        capabilities.setCapability("deviceName", "Google Pixel 3");
+        capabilities.setCapability("udid", "127.0.0.1:5555");
         capabilities.setCapability("platformVersion", "Android 10.0");
         capabilities.setCapability("automationName", "Appium");
         capabilities.setCapability("appPackage", "org.wikipedia");
@@ -36,42 +36,51 @@ public class Lesson3 {
     }
 
     @Test
-    public void Ex3() {
+    public void Ex4()
+    {
+
         waitForElementAndClick(
-                By.xpath("//*[contains (@text, 'Search Wikipedia')]"),
-                "'Search Wikipedia' not found",
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "JAVA",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/fragment_search_results']//*[contains(@text,'JAVA')]"),
+                "Cannot find 'Cannot find  'JAVA'",
                 15
         );
 
-        assertElementHasText(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_plate']//*[@text='Search…']"),
-                "Search…",
-                "Cannot find 'Search…'",
-                15
-        );
-
-
     }
-
-    private WebElement assertElementHasText(By by, String expected_text, String error_message, long timeOut) {
-        WebElement element = waitForElementPresent(by, error_message, timeOut);
-        String actual_text = element.getText();
-        Assert.assertEquals(expected_text, actual_text, error_message);
-        return element;
-    }
-
-    private WebElement waitForElementPresent(By by, String error_message, long timeoutinSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, timeoutinSeconds);
+    private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
         return wait.until(
                 ExpectedConditions.presenceOfElementLocated(by)
         );
-
     }
 
-    private WebElement waitForElementAndClick(By by, String error_message, long timeOut) {
-        WebElement element = waitForElementPresent(by, error_message, timeOut);
+    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds)
+    {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.click();
         return element;
     }
+
+    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds)
+    {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        element.sendKeys(value);
+        return element;
+    }
+
 }
+
