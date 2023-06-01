@@ -22,14 +22,8 @@ public class Ex4 extends CoreTestCase {
         SearchPageObject.initSearchInput();
         SearchPageObject.TypeSearchLine("Java");
         //клик в заголовок
-        SearchPageObject.ClickByArticleWithSubstring("Object-oriented programming language");
-        ArticlePageObject ArticlePageObject = new ArticlePageObject( driver);
-        String ArticleTitle = ArticlePageObject.GetArticleTitle();
-
-        Assert.assertEquals("We see expected title",
-                "Java (programming language)",
-                ArticleTitle
-        );
+        SearchPageObject.waitForSearchResult("Java");
+        SearchPageObject.getSearchResultXpathByTitleAndDescription("Java", "Island of Indonesia, Southeast Asia");
 
     }
 
