@@ -1,27 +1,31 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public class ArticlePageObject extends MainPageObject {
+abstract public class ArticlePageObject extends MainPageObject {
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
     }
 
-    private static final String
-            TITLE = "id:org.wikipedia:id/view_page_title_text",
-            MY_TITLE = "id:org.wikipedia:id/view_page_title_text",
-            ARTICLE_TITLE = "xpath://android.view.View/android.view.View[1]/android.view.View[1]",
-            OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
-            ADD_TO_MY_LIST_BUTTON = "xpath://*[@text = 'Add to reading list']",
-            ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
-            MY_LIST_MAME_INPUT = "id:org.wikipedia:id/text_input",
-            MY_LIST_OK_BUTTON = "xpath://*[@text = 'OK']",
-            MY_SAVED_FOLDER_NAME = "xpath://*[@text = '{SAVED_FOLDER_NAME}']",
-            CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton [@content-desc = 'Navigate up']",
-            ELEMENT_TO_FIND_AFTER_SWIPE_TPL = "xpath://*[contains(@text,'{NAME_OF_ELEMENT}')]";
+    protected static String
+
+            TITLE,
+            ARTICLE_TITLE,
+            OPTION_BUTTON,
+            ADD_TO_MY_LIST_BUTTON,
+            ADD_TO_MY_LIST_OVERLAY,
+            MY_LIST_MAME_INPUT,
+            MY_LIST_OK_BUTTON,
+            MY_SAVED_FOLDER_NAME,
+            CLOSE_ARTICLE_BUTTON,
+            ELEMENT_TO_FIND_AFTER_SWIPE_TPL,
+            FOOTER_ELEMENT,
+            OPTION_ADD_TO_MY_LIST_BUTTON,
+            MY_CREATE_LIST;
+
 
     private static String GetSearchElementByxPath (String search_element)
 {
@@ -33,36 +37,43 @@ public class ArticlePageObject extends MainPageObject {
     }
 
     public WebElement waitForTitleElement() {
-        return this.waitForElementPresent(MY_TITLE, "Cannot find article title on page", 15);
+        return this.waitForElementPresent(
+                TITLE,
+                "Cannot find article title on page",
+                15);
     }
     public void ClickInSavedFolder (String name_of_saved_folder)
     {
         String SavedFolderNameXpath = GetNameOfSavedFolder(name_of_saved_folder);
-                this.waitForElementAndClick(SavedFolderNameXpath,
+                this.waitForElementAndClick(
+                        SavedFolderNameXpath,
                         "Cannot find saved folder with name "+name_of_saved_folder,
                         5
                 );
     }
 
-    public String GetArticleTitle() {
+    public String getArticleTitle() {
         WebElement title_element = waitForTitleElement();
-        return title_element.getAttribute("text");
+        if (Platform.getInstance().isAndroid()){
+            return title_element.getAttribute("text");
+        } else{
+            return title_element.getAttribute("name");
+        }
     }
 
     public WebElement waitForTitleElementMy() {
-        return this.waitForElementPresent (TITLE, "Cannot find article title on page", 15);
+        return this.waitForElementPresent (
+                TITLE,
+                "Cannot find article title on page",
+                15);
     }
 
-    public String GetArticleTitleMy() {
-        WebElement title_element1 = waitForTitleElementMy();
-        return title_element1.getAttribute("text");
 
-    }
 
     public void AddArticleToMyList (String name_of_folder)
     {
         this.waitForElementAndClick(
-                OPTIONS_BUTTON,
+                OPTION_BUTTON,
                 "cannot find button 'more options'",
                 5
         );
@@ -106,7 +117,7 @@ public class ArticlePageObject extends MainPageObject {
     public void AddArticleToFolderInMyList (String name_of_saved_folder)
     {
         this.waitForElementAndClick(
-                OPTIONS_BUTTON,
+                OPTION_BUTTON,
                 "cannot find button 'more options'",
                 5
         );
@@ -124,6 +135,16 @@ public class ArticlePageObject extends MainPageObject {
                 5
         );
     }
+    public void addArticlesToMySaved(){
+        this.waitForElementAndClick(OPTION_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list",5);
+    }
+
+    public void checkArticleWithoutWait(){
+        this.assertElementPresent(
+                TITLE,
+                "Cannot find Article"
+        );
+    }
     public void assertArticleHasTitle(String article_title) {
         String article_title_actual = waitForElementPresent(
                 ARTICLE_TITLE,
@@ -136,5 +157,19 @@ public class ArticlePageObject extends MainPageObject {
                 "Wrong article title"
         );
     }
+    public void swipeToFooter(){
 
+        if (Platform.getInstance().isAndroid()) {
+            this.swipeUpToFindElement(
+                    FOOTER_ELEMENT,
+                    "Cannot find the end of the article",
+                    80
+            );
+        } else {
+            this.swipeUpTitleElementAppear(
+                    FOOTER_ELEMENT,
+                    "Cannot find the end of the article",
+                    80 );
+        }
+    }
 }

@@ -3,21 +3,26 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 
-public class SearchPageObject extends MainPageObject {
+abstract public class SearchPageObject extends MainPageObject {
 
 
-    public SearchPageObject(AppiumDriver driver) {
+    public SearchPageObject(AppiumDriver driver)
+    {
         super(driver);
     }
 
-    private static final String
-            SEARCH_INIT_ELEMENT = "xpath://*[contains (@text, 'Search Wikipedia')]",
-            SEARCH_INPUT = "xpath://*[contains (@text, 'Search…')]",
-            SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://*[@resource-id='org.wikipedia:id/search_results_container']//*[@text='{SUBSTRING}']",
-            SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            SEARCH_CANCEL_BUTTON = "id:org.wikipedia:id/search_close_btn",
-            SEARCH_RESULT_BY_STRING_ON_PAGE_TPL = "id:org.wikipedia:id/view_page_subtitle_text",
-            ARTICLE_TITLE_AND_DESCRIPTION = "xpath://android.view.ViewGroup/android.widget.TextView[@text='{TITLE}']/../android.widget.TextView[@text='{DESCRIPTION}']/..",
+   protected  static  String
+            SEARCH_INIT_ELEMENT ,
+            SEARCH_INPUT ,
+            SEARCH_RESULT_BY_SUBSTRING_TPL ,
+            SEARCH_RESULT_ELEMENT ,
+            SEARCH_RESULT_LIST,
+            SEARCH_CANCEL_BUTTON ,
+            SEARCH_EMPTY_RESULT_ELEMENT,
+           CLEAR_SEARCH_LINE,
+            SEARCH_RESULT_BY_STRING_ON_PAGE_TPL ,
+            ARTICLE_TITLE_AND_DESCRIPTION ;
+
 }
 
 
@@ -61,14 +66,10 @@ public class SearchPageObject extends MainPageObject {
                 ,"Cannot find X to click cancel search",
                 10);
     }
-    public void TypeSearchLine (String search_line)
-    {
-        this.waitForElementAndSendKeys(
-                SEARCH_INPUT,
-                search_line,
-                "Cannot find and type search input",
-                15);
+    public void typeSearchLine(String search_line){
+        this.waitForElementAndSendKeys(SEARCH_INPUT, search_line, "Cannot find and type into search input", 5);
     }
+
     public static String getSearchResultXpathByTitleAndDescription(String title, String description) {
         return ARTICLE_TITLE_AND_DESCRIPTION
                 .replace("{TITLE}", title)
@@ -84,6 +85,10 @@ public class SearchPageObject extends MainPageObject {
                 ,"Cannot find search result with substring"+ substring,
                 10);
     }
+    public void waitForEmptyResultLabel(){
+        this.waitForElementPresent(SEARCH_EMPTY_RESULT_ELEMENT, "Cannot find empty result element", 15);
+    }
+
     public  void waitForSearchResultOnPage()
     {
         this.waitForElementPresent(
@@ -91,7 +96,10 @@ public class SearchPageObject extends MainPageObject {
                 ,"Cannot find search result with substring",
                 10);
     }
-    public  void ClickByArticleWithSubstring(String substring)
+    public void assertThereIsNoResultOfSearch(){
+        this.assertElementNotPresent(SEARCH_RESULT_ELEMENT, "We supposed not to find any results");
+    }
+    public  void clickByArticleWithSubstring (String substring)
     {
         String SearchResultXpath = GetResultSearchElement (substring);
         this.waitForElementAndClick(

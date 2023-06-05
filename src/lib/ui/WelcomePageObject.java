@@ -4,15 +4,16 @@ import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 
 public class WelcomePageObject extends MainPageObject {
-    private static final String
-    STEP_LEARN_MORE_LINK = "id:Википедия создается совместно волонтерами и состоит из более 40 миллионов статей на более чем 300 языках.",
-    STEP_NEW_WAYS_TO_EXPLORE_TEXT = "id:Новые способы изучения",
-    STEP_ADD_OR_ADDED_PREFER_LANG_LINK = "xpath://XCUIElementTypeStaticText[@name=\"Добавить или изменить предпочтительные языки\"]",
-    STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK = "xpath://XCUIElementTypeStaticText[@name=\"Узнать подробнее о сборе данных\"]",
-    NEXT_LINK = "xpath://XCUIElementTypeStaticText[@name=\"Далее\"]",
-    GET_STARTED_BUTTON = "xpath://XCUIElementTypeStaticText[@name=\"Начать\"]",
-    SKIP = "id:Skip";
-    public WelcomePageObject(AppiumDriver driver) {
+    protected static  String
+    STEP_LEARN_MORE_LINK ,
+    STEP_NEW_WAYS_TO_EXPLORE_TEXT ,
+    STEP_ADD_OR_ADDED_PREFER_LANG_LINK ,
+    STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK ,
+    NEXT_LINK ,
+    GET_STARTED_BUTTON ,
+    SKIP ;
+    public WelcomePageObject(AppiumDriver driver)
+    {
         super(driver);
     }
 
@@ -59,10 +60,11 @@ public class WelcomePageObject extends MainPageObject {
                 10);
     }
 
-    public void clickSkip() {
+    public void clickskip() {
         this.waitForElementAndClick(
                 SKIP,
                 "Cannot find and click skip button",
                 5);
     }
+
 }

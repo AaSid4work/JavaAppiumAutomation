@@ -12,37 +12,43 @@ public class CoreTestCase extends TestCase {
     protected AppiumDriver driver;
 
 
-    @After
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         driver = Platform.getInstance().getDriver();
         this.rotateScreenPortrait();
-        this.skipeWelcomePageForIOSApp();
+        this.skipWelcomePageForIOSApp();
     }
 
-    @After
+    @Override
     public void tearDown() {
        driver.quit();
 
    }
-    protected void rotateScreenPortrait(){
+    protected void rotateScreenPortrait()
+    {
         driver.rotate(ScreenOrientation.PORTRAIT);
     }
 
-    protected void rotateScreenLandscape(){
+    protected void rotateScreenLandscape()
+    {
         driver.rotate(ScreenOrientation.LANDSCAPE);
     }
 
-    protected void backgroundApp(int second){
+    protected void backgroundApp(int second)
+    {
         driver.runAppInBackground(Duration.ofSeconds(second));
     }
+    private void skipWelcomePageForIOSApp()
+    {
+        if(Platform.getInstance().isIOS()) {
+            WelcomePageObject WelcomePageObject = new WelcomePageObject(driver);
+            WelcomePageObject.clickskip();
 
-    private void skipeWelcomePageForIOSApp() {
-        if (Platform.getInstance().isIOS()) {
-            WelcomePageObject welcomePageObject = new WelcomePageObject(driver);
-            welcomePageObject.clickSkip();
+        }
         }
     }
+
 }
 
 
