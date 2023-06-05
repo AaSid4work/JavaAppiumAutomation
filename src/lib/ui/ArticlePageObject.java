@@ -11,16 +11,17 @@ public class ArticlePageObject extends MainPageObject {
     }
 
     private static final String
-            TITLE = "org.wikipedia:id/view_page_title_text",
-            MY_TITLE = "org.wikipedia:id/view_page_title_text",
-    OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
-    ADD_TO_MY_LIST_BUTTON = "//*[@text = 'Add to reading list']",
-    ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
-    MY_LIST_MAME_INPUT = "org.wikipedia:id/text_input",
-    MY_LIST_OK_BUTTON = "//*[@text = 'OK']",
-    MY_SAVED_FOLDER_NAME = "//*[@text = '{SAVED_FOLDER_NAME}']",
-    CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton [@content-desc = 'Navigate up']",
-            ELEMENT_TO_FIND_AFTER_SWIPE_TPL = "//*[contains(@text,'{NAME_OF_ELEMENT}')]";
+            TITLE = "id:org.wikipedia:id/view_page_title_text",
+            MY_TITLE = "id:org.wikipedia:id/view_page_title_text",
+            ARTICLE_TITLE = "xpath://android.view.View/android.view.View[1]/android.view.View[1]",
+            OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
+            ADD_TO_MY_LIST_BUTTON = "xpath://*[@text = 'Add to reading list']",
+            ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
+            MY_LIST_MAME_INPUT = "id:org.wikipedia:id/text_input",
+            MY_LIST_OK_BUTTON = "xpath://*[@text = 'OK']",
+            MY_SAVED_FOLDER_NAME = "xpath://*[@text = '{SAVED_FOLDER_NAME}']",
+            CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton [@content-desc = 'Navigate up']",
+            ELEMENT_TO_FIND_AFTER_SWIPE_TPL = "xpath://*[contains(@text,'{NAME_OF_ELEMENT}')]";
 
     private static String GetSearchElementByxPath (String search_element)
 {
@@ -32,12 +33,12 @@ public class ArticlePageObject extends MainPageObject {
     }
 
     public WebElement waitForTitleElement() {
-        return this.waitForElementPresent(By.xpath(MY_TITLE), "Cannot find article title on page", 15);
+        return this.waitForElementPresent(MY_TITLE, "Cannot find article title on page", 15);
     }
     public void ClickInSavedFolder (String name_of_saved_folder)
     {
         String SavedFolderNameXpath = GetNameOfSavedFolder(name_of_saved_folder);
-                this.waitForElementAndClick(By.xpath(SavedFolderNameXpath),
+                this.waitForElementAndClick(SavedFolderNameXpath,
                         "Cannot find saved folder with name "+name_of_saved_folder,
                         5
                 );
@@ -49,7 +50,7 @@ public class ArticlePageObject extends MainPageObject {
     }
 
     public WebElement waitForTitleElementMy() {
-        return this.waitForElementPresent(By.id(TITLE), "Cannot find article title on page", 15);
+        return this.waitForElementPresent (TITLE, "Cannot find article title on page", 15);
     }
 
     public String GetArticleTitleMy() {
@@ -61,34 +62,34 @@ public class ArticlePageObject extends MainPageObject {
     public void AddArticleToMyList (String name_of_folder)
     {
         this.waitForElementAndClick(
-                By.xpath(OPTIONS_BUTTON),
+                OPTIONS_BUTTON,
                 "cannot find button 'more options'",
                 5
         );
 
         this.waitForElementAndClick(
-                By.xpath(ADD_TO_MY_LIST_BUTTON),
+                 ADD_TO_MY_LIST_BUTTON,
                 "cannot find option to add article to reading list'",
                 5
         );
         this.waitForElementAndClick(
-                By.id(ADD_TO_MY_LIST_OVERLAY),
+               ADD_TO_MY_LIST_OVERLAY,
                 "cannot find GOT IT tip overlay",
                 5
         );
         this.waitForElementAndClear(
-                By.id(MY_LIST_MAME_INPUT),
+                MY_LIST_MAME_INPUT,
                 "Cannot find input to set name of article folder ",
                 5
         );
         this.waitForElementAndSendKeys(
-                By.id(MY_LIST_MAME_INPUT),
+               MY_LIST_MAME_INPUT,
                 "Learning Programming",
                 "Cannot put text into article folder input",
                 5
         );
         this.waitForElementAndClick(
-                By.xpath(MY_LIST_OK_BUTTON),
+               MY_LIST_OK_BUTTON,
                 "cannot press OK button",
                 5
         );
@@ -97,7 +98,7 @@ public class ArticlePageObject extends MainPageObject {
     public void CloseArticle ()
     {
         waitForElementAndClick(
-                By.xpath(CLOSE_ARTICLE_BUTTON),
+            CLOSE_ARTICLE_BUTTON,
                 "cannot close article, cannot find x button",
                 5
         );
@@ -105,12 +106,12 @@ public class ArticlePageObject extends MainPageObject {
     public void AddArticleToFolderInMyList (String name_of_saved_folder)
     {
         this.waitForElementAndClick(
-                By.xpath(OPTIONS_BUTTON),
+                OPTIONS_BUTTON,
                 "cannot find button 'more options'",
                 5
         );
         this.waitForElementAndClick(
-                By.xpath(ADD_TO_MY_LIST_BUTTON),
+               ADD_TO_MY_LIST_BUTTON,
                 "cannot find option to add article to reading list'",
                 5
         );
@@ -118,9 +119,21 @@ public class ArticlePageObject extends MainPageObject {
         ClickInSavedFolder(name_of_saved_folder);
 
         this.waitForElementAndClick(
-                By.xpath(MY_LIST_OK_BUTTON),
+              MY_LIST_OK_BUTTON,
                 "cannot press OK button",
                 5
+        );
+    }
+    public void assertArticleHasTitle(String article_title) {
+        String article_title_actual = waitForElementPresent(
+                ARTICLE_TITLE,
+                "Not find title of article",
+                5
+        ).getText();
+        Assert.assertEquals(
+                article_title,
+                article_title_actual,
+                "Wrong article title"
         );
     }
 

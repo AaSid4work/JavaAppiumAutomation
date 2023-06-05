@@ -5,17 +5,17 @@ import org.openqa.selenium.By;
 
 public class NavigationUI  extends MainPageObject
 {
+    public static final String
+    MY_LISTS_LINK = "xpath://android.widget.FrameLayout [@content-desc = 'My lists']"
     public NavigationUI (AppiumDriver driver)
     {
         super(driver);
     }
-    private static final String
-    MY_LISTS_LINK = "//android.widget.FrameLayout [@content-desc = 'My lists']";
 
 public void ClickMyList ()
 {
     this.waitForElementAndClick(
-            By.xpath(MY_LISTS_LINK),
+            MY_LISTS_LINK,
             "cannot find navigation button to My lists",
             5
     );
