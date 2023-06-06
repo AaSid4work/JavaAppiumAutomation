@@ -1,17 +1,16 @@
+package Tests.Homeworks;
+
 import lib.CoreTestCase;
-import lib.ui.ArticlePageObject;
-import lib.ui.MainPageObject;
-import lib.ui.SearchPageObject;
-import org.junit.Assert;
+import lib.ui.IOS.SearchPageObject;
 import org.junit.Test;
 
 
 public class Ex4 extends CoreTestCase {
-    public MainPageObject MainPageObject;
-    protected void setUp() throws Exception
+    public iOSMainPageObject MainPageObject;
+    public void setUp() throws Exception
     {
         super.setUp();
-        MainPageObject = new MainPageObject(driver);
+        MainPageObject = new iOSMainPageObject(driver);
     }
 
     @Test

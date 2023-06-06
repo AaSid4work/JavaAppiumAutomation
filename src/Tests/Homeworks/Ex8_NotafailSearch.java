@@ -1,15 +1,15 @@
+package Tests.Homeworks;
+
 import lib.CoreTestCase;
-import lib.ui.MainPageObject;
-import lib.ui.SearchPageObject;
+import lib.ui.IOS.SearchPageObject;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
 
 public class Ex8_NotafailSearch extends CoreTestCase {
-    public MainPageObject MainPageObject;
+    public iOSMainPageObject MainPageObject;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
-        MainPageObject = new MainPageObject(driver);
+        MainPageObject = new iOSMainPageObject(driver);
     }
 
 

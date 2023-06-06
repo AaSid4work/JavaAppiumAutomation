@@ -1,20 +1,20 @@
+package Tests.Homeworks;
+
 import lib.CoreTestCase;
-import lib.ui.MainPageObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+
+
 
 
 public class Ex7 extends CoreTestCase {
-    public MainPageObject MainPageObject;
-    protected void setUp() throws Exception
+    public iOSMainPageObject MainPageObject;
+    public void setUp() throws Exception
     {
         super.setUp();
-        MainPageObject = new MainPageObject(driver);
+        MainPageObject = new iOSMainPageObject(driver);
     }
 
 
@@ -48,7 +48,8 @@ public class Ex7 extends CoreTestCase {
                 "Cannot find title of article",
                 5
         );
-        driver.rotate(ScreenOrientation.LANDSCAPE);
+        //driver.notify
+         //       (ScreenOrientation.LANDSCAPE);
 
         String TitleAfterRotation = MainPageObject.waitForElementAndGetAtribute(
                 By.id(search_title_locator),

@@ -1,18 +1,19 @@
-import io.appium.java_client.TouchAction;
+package Tests.Homeworks;
+
 import lib.CoreTestCase;
 import lib.ui.*;
+import lib.ui.IOS.*;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.util.List;
 
 public class Lesson4 extends CoreTestCase  {
     public MainPageObject MainPageObject;
-    protected void setUp() throws Exception
+    public void setUp() throws Exception
     {
         super.setUp();
         MainPageObject = new MainPageObject(driver);
@@ -20,15 +21,15 @@ public class Lesson4 extends CoreTestCase  {
 
     @Test
     public void TestSwipeArticle () {
-        SearchPageObject SearchPageObject = new SearchPageObject (driver); // инициализация страницы поиска
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver); // инициализация страницы поиска
 
         SearchPageObject.initSearchInput(); // ищем поле ввода
 
-        SearchPageObject.TypeSearchLine("Appium"); //вводим текст
+        SearchPageObject.typeSearchLine("Appium"); //вводим текст
 
-        SearchPageObject.ClickByArticleWithSubstring("Appium"); // кликаем в текст в найденном списке
+        SearchPageObject.clickByArticleWithSubstring("Appium"); // кликаем в текст в найденном списке
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);// инициализация страницы статьи
+        iOSArticlePageObject ArticlePageObject = new iOSArticlePageObject(driver);// инициализация страницы статьи
 
         ArticlePageObject.waitForTitleElement(); //ждем определенного заголовка
 
@@ -38,22 +39,22 @@ public class Lesson4 extends CoreTestCase  {
     @Test
     public void SaveFirstArticleToMyList() {
         //Клик в поле поиска и ввод текста
-        SearchPageObject SearchPageObject = new SearchPageObject( driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get( driver);
         SearchPageObject.initSearchInput();
-        SearchPageObject.TypeSearchLine("Java");
+        SearchPageObject.typeSearchLine("Java");
         //клик в заголовок
-        SearchPageObject.ClickByArticleWithSubstring("Object-oriented programming language");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
         //проверка что заголовок отобразился
-        ArticlePageObject ArticlePageObject = new ArticlePageObject( driver);
-        String ArticleTitle = ArticlePageObject.GetArticleTitle();
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get( driver);
+        String ArticleTitle = ArticlePageObject.getArticleTitle();
         String name_of_folder = "Anime";
         ArticlePageObject.AddArticleToMyList(name_of_folder);
         ArticlePageObject.CloseArticle();
 
-        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.ClickMyList();
 //действия на слое избранное
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject MyListsPageObject = MyListPageObjectFactory.get(driver);
         MyListsPageObject.OpenFolderByName(name_of_folder);
         MyListsPageObject.swipeByArticleToDelete(ArticleTitle);
 
@@ -76,12 +77,12 @@ public class Lesson4 extends CoreTestCase  {
         // String searchResultLocator = "//*[@resourse_id='org.wikipedia:id/page_list_item_container']//*[@text = 'Linkin Park']";
 
         MainPageObject.waitForElementPresent(
-                By.xpath("//*[@resourse_id='org.wikipedia:id/search_results_list']//*[contains(@text,'Linkin Park')]"),
+                ("//*[@resourse_id='org.wikipedia:id/search_results_list']//*[contains(@text,'Linkin Park')]"),
                 "Cannot find anything by the request" + searchLine,
                 15
         );
         int amountOfSearchResult = MainPageObject.getAmountOfElements(
-                By.xpath("//*[@resourse_id='org.wikipedia:id/search_results_list']//*[contains(@text,'Linkin Park')]")
+                String.valueOf(By.xpath("//*[@resourse_id='org.wikipedia:id/search_results_list']//*[contains(@text,'Linkin Park')]"))
         );
         Assert.assertTrue(
                 "We found too few results",

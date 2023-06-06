@@ -1,15 +1,15 @@
-import io.appium.java_client.AppiumDriver;
+package Tests.Homeworks;
+
 import lib.CoreTestCase;
-import lib.ui.ArticlePageObject;
-import lib.ui.MainPageObject;
-import lib.ui.SearchPageObject;
+import lib.ui.IOS.iOSArticlePageObject;
+import lib.ui.IOS.SearchPageObject;
 import org.junit.Test;
 public class FirstTest  extends CoreTestCase {
-    public MainPageObject MainPageObject;
+    public iOSMainPageObject MainPageObject;
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
-        MainPageObject = new MainPageObject(driver);
+        MainPageObject = new iOSMainPageObject(driver);
     }
 
     @Test
@@ -29,9 +29,9 @@ public class FirstTest  extends CoreTestCase {
         searchPageObject.TypeSearchLine("java");
         searchPageObject.ClickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        iOSArticlePageObject articlePageObject = new iOSArticlePageObject(driver);
         articlePageObject.waitForTitleElement();
-        String article_title = articlePageObject.GetArticleTitle();
+        String article_title = articlePageObject.getArticleTitle();
         String name_of_folder = "Learning programming";
 
         articlePageObject.AddArticleToMyList(name_of_folder);
